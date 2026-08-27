@@ -1,3 +1,25 @@
+# DO NOT USE THIS BRANCH TO COMPILE {PROTON,WINE}-TKG
+<sub>You've been warned! But you can if you want, just I won't be able to fully assist 🐸</sub>
+
+This is my personal base branch for rebases and/or action workflows for testing patches that I do not personally use and/or do not have the capacity to utilize them fully. A lot of bad and silly stuff will go on here, including but not limited to: forced pushes, broken patches, missing files, dirty repo tree, messed up file structure and so on. Basically expect a lot of frogging up to happen here 🐸
+
+<sub>Let me know if I accidentally opened a pr with this branch, it most definitely is a mistake in that case</sub>
+
+Although I doubt anyone will want to pick this repo and branch one up for themselves and work off of that, the general workflow for this branch is:
+
+1. Branch off from here, aka `DO_NOT_USE_BREAKAGES_HAPPEN_HERE`
+2. Rebase a patch and/or make other changes
+3. Trigger a CI/CD (see `.github/workflows` directory for available ones) or fire it manually and see if it applies patches correctly and compiles (although there may be limitations wrt compilation)
+4. Amend changes if applicable by force pushing or adding more commits to a branch on top fixing up a broken change (doesn't matter really but force push will result in a cleaner tree)
+5. Go back to point 3 and repeat until stuff works
+6. Branch off from the main branch, aka `master`
+7. Save a patch from a branch based on `DO_NOT_USE_BREAKAGES_HAPPEN_HERE`, or pick commit(s) and insert into the branch that is branched off of main branch
+8. Submit changes upstream
+9. ???
+10. Profit!
+
+---
+
 # Wine to rule them all !
 
 You must be logged in to GitHub in order to download Wine or Proton nightly builds.
