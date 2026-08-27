@@ -1,0 +1,34 @@
+name: Build Wine when patch is updated
+
+on:
+  push:
+      branches:
+          - 'rb-**'
+      paths:
+          - 'wine-tkg-git/wine-tkg-patches/**.patch'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Compile
+        env:
+          XDG_CACHE_HOME: /tmp/.cache
+        run: |
+          echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+          pacman -Syu --noconfirm base-devel sudo
+          useradd user -G wheel && echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+          chown user -R . && cd wine-tkg-git
+          sed -i 's/wayland_driver="false"/wayland_driver="true"/' customization.cfg
+          sed -i 's/_NOLIB32="false"/_NOLIB32="wow64"/' wine-tkg-profiles/advanced-customization.cfg
+          su user -c "yes|PKGDEST=/tmp/wine-tkg makepkg --noconfirm -s"
+
+      - name: Archive the artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: wine-tkg-build
+          path: /tmp/wine-tkg
